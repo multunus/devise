@@ -11,7 +11,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     visit_new_password_path
     assert_response :success
     assert_not warden.authenticated?(:user)
-
+    
     fill_in 'email', with: 'user@test.com'
     yield if block_given?
 
@@ -21,7 +21,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
 
   def reset_password(options={}, &block)
     unless options[:visit] == false
-      visit edit_user_password_path(reset_password_token: options[:reset_password_token] || "abcdef")
+      visit edit_user_password_path(reset_password_token: options[:reset_password_token] || "77f10a5d9d3917deab1b91c46e9468e82b3b7ce71033bd6566f71ef27a45d4ae")
       assert_response :success
     end
 
@@ -52,7 +52,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
 
     mail = ActionMailer::Base.deliveries.last
     assert_equal ['custom@example.com'], mail.from
-    assert_match edit_user_password_path(reset_password_token: 'abcdef'), mail.body.encoded
+    assert_match edit_user_password_path(reset_password_token: '77f10a5d9d3917deab1b91c46e9468e82b3b7ce71033bd6566f71ef27a45d4ae'), mail.body.encoded
   end
 
   test 'reset password with email of different case should fail when email is NOT the list of case insensitive keys' do
@@ -275,8 +275,9 @@ class PasswordTest < ActionDispatch::IntegrationTest
   test 'change password with valid parameters in XML format should return valid response' do
     create_user
     request_forgot_password
+    user = User.first
     put user_password_path(format: 'xml'), user: {
-      reset_password_token: 'abcdef', password: '987654321', password_confirmation: '987654321'
+      reset_password_token: '77f10a5d9d3917deab1b91c46e9468e82b3b7ce71033bd6566f71ef27a45d4ae', password: '987654321', password_confirmation: '987654321'
     }
     assert_response :success
     assert warden.authenticated?(:user)

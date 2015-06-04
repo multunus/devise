@@ -104,7 +104,8 @@ module Devise
           self.reset_password_token   = enc
           self.reset_password_sent_at = Time.now.utc
           self.save(validate: false)
-          raw
+          #raw
+          enc
         end
 
         def send_reset_password_instructions_notification(token)
@@ -115,8 +116,8 @@ module Devise
         # Attempt to find a user by password reset token. If a user is found, return it
         # If a user is not found, return nil
         def with_reset_password_token(token)
-          reset_password_token = Devise.token_generator.digest(self, :reset_password_token, token)
-          to_adapter.find_first(reset_password_token: reset_password_token)
+          #reset_password_token = Devise.token_generator.digest(self, :reset_password_token, token)
+          to_adapter.find_first(reset_password_token: token)
         end
 
         # Attempt to find a user by its email. If a record is found, send new

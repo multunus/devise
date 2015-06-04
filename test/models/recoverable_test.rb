@@ -165,7 +165,6 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     old_password = user.password
     raw  = user.send_reset_password_instructions
-
     reset_password_user = User.reset_password_by_token(
       reset_password_token: raw,
       password: 'new_password',
@@ -218,7 +217,8 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should return the same reset password token as generated' do
     user = create_user
     raw  = user.send_reset_password_instructions
-    assert_equal Devise.token_generator.digest(self.class, :reset_password_token, raw), user.reset_password_token
+    #assert_equal Devise.token_generator.digest(self.class, :reset_password_token, raw), user.reset_password_token
+    assert_equal raw, user.reset_password_token
   end
 
   test 'should return nil if a user based on the raw token is not found' do
